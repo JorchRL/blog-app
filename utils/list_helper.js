@@ -12,13 +12,66 @@ const totalLikes = (blogs) => {
     : blogs.map((blog) => blog.likes).reduce((a, b) => a + b, 0);
 };
 
-const favoriteBlog = () => {};
+const favoriteBlog = (blogs) => {
+  // we also need to format the returned object
 
-const mostBlogs = () => {};
+  if (blogs.length === 0) {
+    return {
+      title: "",
+      author: "",
+      url: "",
+      likes: "",
+    };
+  }
 
-const mostLikes = () => {};
+  const favorite = blogs.reduce((prev, curr) =>
+    prev.likes < curr.likes ? curr : prev
+  );
+
+  return {
+    title: favorite.title,
+    author: favorite.author,
+    url: favorite.url,
+    likes: Number(favorite.likes),
+  };
+};
+
+const mostBlogs = (blogs) => {
+  if (blogs.length === 0) {
+    return {
+      author: "",
+      blogs: 0,
+    };
+  }
+
+  const authorWithMostBlogs = {
+    author: "",
+    blogs: 0,
+  };
+
+  return authorWithMostBlogs;
+};
+
+const mostLikes = (blogs) => {
+  if (blogs.length === 0) {
+    return {
+      author: "",
+      likes: 0,
+    };
+  }
+
+  const authorWithMostLikes = {
+    author: "",
+    likes: 0,
+  };
+
+  return authorWithMostLikes;
+};
 
 module.exports = {
   dummy,
   totalLikes,
+  favoriteBlog,
+  mostBlogs,
+  mostLikes,
 };

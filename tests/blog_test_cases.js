@@ -53,9 +53,9 @@ const listWithOneBlog = [
   {
     _id: "123",
     title: "How to make a million dollars writing tests!",
-    author: "Me :3",
+    author: "Me",
     url: "www.katitos.art/blogs/123",
-    likes: "10",
+    likes: 10,
     __v: "0",
   },
 ];
