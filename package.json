@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:verbose": "jest --verbose",
-    "test": "jest",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "test:verbose": "NODE_ENV=test jest --verbose --runInBand",
+    "test": "NODE_ENV=test jest --runInBand",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js"
   },
   "repository": {
     "type": "git",
