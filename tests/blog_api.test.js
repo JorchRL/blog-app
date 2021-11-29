@@ -12,19 +12,19 @@ beforeEach(async () => {
 });
 
 // GET /api/blogs
-test.skip("returns the blogs as json", async () => {
+test("returns the blogs as json", async () => {
   await api
     .get("/api/blogs")
     .expect(200)
     .expect("Content-Type", /application\/json/);
 });
 
-test.skip("returns all notes stored in the database", async () => {
+test("returns all blogs stored in the database", async () => {
   const response = await api.get("/api/blogs");
   expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
 
-test.skip("a returned blog has an 'id' property", async () => {
+test("a returned blog has an 'id' property", async () => {
   const response = await api.get("/api/blogs");
   const exampleBlog = response.body[0];
   expect(exampleBlog.id).toBeDefined();
@@ -50,9 +50,9 @@ test("blogs are successfully created", async () => {
 
 test("if the 'likes' property is missing, sets the default value to 0", async () => {
   const blogWithNoLikes = {
-    title: helper.title,
-    author: helper.author,
-    url: helper.url,
+    title: helper.singleBlog.title,
+    author: helper.singleBlog.author,
+    url: helper.singleBlog.url,
   };
 
   await api.post("/api/blogs").send(blogWithNoLikes);
@@ -64,7 +64,7 @@ test("if the 'likes' property is missing, sets the default value to 0", async ()
   expect(newBlog.likes).toBe(0);
 });
 
-test.only("if the 'title' and 'url' properties are missing, fail with status 400 Bad Request", async () => {
+test("if the 'title' and 'url' properties are missing, fail with status 400 Bad Request", async () => {
   const incompleteBlog = {
     author: "jorch",
     likes: 2,
