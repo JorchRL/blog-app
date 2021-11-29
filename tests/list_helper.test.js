@@ -1,7 +1,7 @@
 const listHelper = require("../utils/list_helper");
 const blogTestCases = require("./blog_test_cases");
 
-describe("dummy", () => {
+describe.skip("dummy", () => {
   test("dummy returns one", () => {
     const blogs = [];
     const result = listHelper.dummy(blogs);
@@ -10,7 +10,7 @@ describe("dummy", () => {
   });
 });
 
-describe("total likes", () => {
+describe.skip("total likes", () => {
   const { listWithOneBlog, blogs } = blogTestCases;
 
   test("when list is empty, equals 0", () => {
@@ -29,7 +29,7 @@ describe("total likes", () => {
   });
 });
 
-describe.only("favoriteBlog", () => {
+describe.skip("favoriteBlog", () => {
   test("when list has many blogs, returns the one with most likes", () => {
     const result = listHelper.favoriteBlog(blogTestCases.blogs);
     expect(result).toEqual({
@@ -53,7 +53,7 @@ describe.only("favoriteBlog", () => {
   test("when list is empty, returns an empty blog", () => {});
 });
 
-describe.only("mostBlogs", () => {
+describe.skip("mostBlogs", () => {
   test("when list has many blogs, returns the author with most blogs", () => {
     const result = listHelper.mostBlogs(blogTestCases.blogs);
     expect(result).toEqual({
@@ -79,7 +79,7 @@ describe.only("mostBlogs", () => {
   });
 });
 
-describe.only("mostLikes", () => {
+describe.skip("mostLikes", () => {
   test("when list has many blogs, return the author with most likes", () => {
     const result = listHelper.mostLikes(blogTestCases.blogs);
     expect(result).toEqual({
