@@ -29,6 +29,13 @@ test("returns all notes stored in the database", async () => {
   expect(response.body).toHaveLength(helper.initialBlogs.length);
 });
 
+test.only("a returned blog has an 'id' property", async () => {
+  const response = await api.get("/api/blogs");
+  // console.log(response.body[0]);
+  const exampleBlog = response.body[0];
+  expect(exampleBlog.id).toBeDefined();
+});
+
 afterAll(() => {
   mongoose.connection.close();
 });
