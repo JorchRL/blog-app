@@ -12,8 +12,11 @@ const unknownEndpoint = (request, response) => {
 };
 const errorHandler = (error, request, response, next) => {
   logger.error(error.message);
+  // console.log(error);
 
   switch (error.name) {
+    case "CastError":
+      return response.status(400).json({ error: error.message });
     case "ValidationError":
       return response.status(400).json({ error: error.message });
     default:

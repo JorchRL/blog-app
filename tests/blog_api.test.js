@@ -84,16 +84,55 @@ describe("Adding new blogs", () => {
 
 // DELETE /api/blogs/id
 describe("Deleting an existing blog by id", () => {
-  test("should suceed with status code 204 if id is valid and of an existing blog", async () => {});
+  test("should suceed with status code 204 if id is valid and of an existing blog", async () => {
+    const blogsAtStart = await helper.blogsInDB();
+    const blogToDelete = blogsAtStart[0];
 
-  test("should fail with status code 400 id id is invalid or non-existing", async () => {});
+    await api.delete(`/api/blogs/${blogToDelete.id}`).expect(204);
+
+    const blogsAtEnd = await helper.blogsInDB();
+    expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length - 1);
+
+    const contents = blogsAtEnd.map((b) => b.title);
+    expect(contents).not.toContain(blogToDelete.title);
+  });
+
+  test("should fail with status code 400 id id is invalid or non-existing", async () => {
+    await api.delete(`/api/blogs/123a`).expect(400);
+  });
 });
 
 // PUT /api/blogs/id
 describe("Updating an existing blog by id", () => {
-  test("should succed with status code 204 if id is valid and of an existing blog", async () => {});
+  test("should succeed with status code 204 if id is valid and of an existing blog", async () => {
+    const blogsAtStart = await helper.blogsInDB();
+    const blogToUpdate = blogsAtStart[0];
 
-  test("should fail with status code 400 if id is invalid or non-existing", async () => {});
+    const updatedBlog = {
+      ...blogToUpdate,
+      title: "UPDATED BLOG",
+    };
+
+    await api
+      .put(`/api/blogs/${blogToUpdate.id}`)
+      .send(updatedBlog)
+      .expect(204);
+
+    const blogsAtEnd = await helper.blogsInDB();
+    const resultingBlog = blogsAtEnd.find((b) => b.id === blogToUpdate.id);
+
+    expect(resultingBlog.title).toEqual("UPDATED BLOG");
+  });
+
+  test("should fail with status code 400 if id is invalid or non-existing", async () => {
+    const failingBlog = {
+      title: "TEST",
+      author: "AUTHOR",
+      URL: "URL",
+    };
+
+    await api.put(`/api/blogs/${"123qweasd"}`).send(failingBlog).expect(400);
+  });
 });
 
 afterAll(() => {
