@@ -20,12 +20,14 @@
   },
   "homepage": "https://github.com/JorchRL/blog-app#readme",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "jest": "^27.3.1",
     "mongoose": "^6.0.13",
+    "mongoose-unique-validator": "^3.0.0",
     "nodemon": "^2.0.15",
-    "supertest": "^6.1.6"
+    "supertest": "^6.2.0"
   },
   "jest": {
     "testEnvironment": "node"
