@@ -1,12 +1,11 @@
 const router = require("express").Router();
-const User = require("../models/user.model");
-
-const bcrypt = require("bcrypt");
 
 const {
   getAllUsers,
   postNewUser,
 } = require("../controllers/users.controller");
+
+// Router: /api/users/
 
 router.get("/", getAllUsers);
 
