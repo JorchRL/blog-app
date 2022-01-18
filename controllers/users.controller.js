@@ -1,6 +1,7 @@
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
 
-const getAllUsers = async (res, req, next) => {
+const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
     res.status(200).json(users);
@@ -11,10 +12,11 @@ const getAllUsers = async (res, req, next) => {
 
 const postNewUser = async (req, res, next) => {
   // validate password here as it never reaches any mongoose validators
-  if (!req.body.password && req.body.password.length < 3) {
-    return res
-      .status(400)
-      .json({ error: "password must be at least 3 characters long" });
+  if (!req.body.password || req.body.password.length < 3) {
+    return res.status(422).json({
+      error:
+        "User validation failed: password must be at least 3 characters long",
+    });
   }
 
   const body = req.body;
@@ -29,7 +31,8 @@ const postNewUser = async (req, res, next) => {
 
   try {
     const savedUser = await user.save();
-    res.status(200).json(savedUser);
+    // status code 201 - Created
+    res.status(201).json(savedUser);
   } catch (error) {
     next(error);
   }
