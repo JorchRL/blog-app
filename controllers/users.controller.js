@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
+    // returns and Array of JSON-formatted User objects!
     res.status(200).json(users);
   } catch (error) {
     next(error);
