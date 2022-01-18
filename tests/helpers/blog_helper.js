@@ -1,6 +1,6 @@
-const Blog = require("../models/blog");
+const Blog = require("../../models/blog");
 
-const initialBlogs = require("./blog_test_cases").blogs;
+const initialBlogs = require("../test-cases/blog_test_cases").blogs;
 
 const singleBlog = {
   title: "test blog",
