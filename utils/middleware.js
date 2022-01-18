@@ -18,9 +18,13 @@ const errorHandler = (error, request, response, next) => {
     case "CastError":
       return response.status(400).json({ error: error.message });
     case "ValidationError":
-      return response.status(400).json({ error: error.message });
+      return response.status(422).json({ error: error.message });
     default:
-      return response.status(500).json({ error: "unhandled error" });
+      return response.status(500).json({
+        error: "unhandled error",
+        noteToDev:
+          "Please make sure this error is handled properly. Don't be lazy, Dev-senpai <3",
+      });
   }
   next(error);
 };
