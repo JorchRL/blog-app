@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const supertest = require("supertest");
-const app = require("app");
+const app = require("../app");
 const api = supertest(app);
 
 const helper = require("./helpers/users_helper");
@@ -23,16 +23,20 @@ describe("Users API", () => {
   /// GET /api/users
   test("should retrieve users as JSON with status 200", async () => {
     await api
-      .get("/api/users/")
+      .get("/api/users")
       .expect(200)
       .expect("Content-Type", /application\/json/);
   }, 100000);
 
   test("should retrive existing users as JSON with status 200", async () => {
-    const response = await api("/api/users/").expect(200);
+    const response = await api
+      .get("/api/users/")
+      .expect(200)
+      .expect("Content-Type", /application\/json/);
 
+    // This route returns an Array of JSON-formatted User Objects!
+    expect(response.body[0].name).toBe("pelos");
     // initially, there is only one user, which we added in beforeEach() above
-    expect(response.body.name).toBe("pelos");
     expect(response.body).toHaveLength(1);
   });
 
@@ -50,11 +54,11 @@ describe("Users API", () => {
       .expect(201)
       .expect("Content-Type", /application\/json/);
 
-    const notesInDB = await helper.usersInDB();
+    const users = await helper.usersInDB();
 
     // Check a new entry was added
-    expect(notesInDB).toHaveLength(2);
-    const contents = notesInDB.map((user) => user.name);
+    expect(users).toHaveLength(2);
+    const contents = users.map((user) => user.name);
     // Check if the entry contains the user we added
     expect(contents).toContain("patiti");
   });
@@ -80,19 +84,66 @@ describe("Users API", () => {
       .expect(422)
       .expect("Content-Type", /application\/json/);
 
-    expect(resp);
+    expect(resp.error).toBeDefined();
+
+    resp = await api
+      .post("/api/users")
+      .send(invelidName)
+      .expect(422)
+      .expect("Content-Type", /application\/json/);
+
+    expect(resp.error).toBeDefined();
   });
 
   test("should fail (422) to post a new user if password is too short", async () => {
     // Validation of password is handled by us with express (see user.controller)
     // password validation fails if there is no password included or if it
     // is less than 3 characters long
+    const invalidPassword = {
+      username: "someuser",
+      name: "somename",
+      password: "a",
+    };
+    const noPassword = {
+      username: "someuser",
+      name: "somename",
+    };
+
+    let resp = await api
+      .post("/api/users")
+      .send(invalidPassword)
+      .expect(422)
+      .expect("Content-Type", /application\/json/);
+
+    expect(resp.error).toBeDefined();
+
+    resp = await api
+      .post("/api/users")
+      .send(noPassword)
+      .expect(422)
+      .expect("Content-Type", /application\/json/);
+
+    expect(resp.error).toBeDefined();
   });
 
   test("should fail (422) to post a new user if username already exists", async () => {
     // Validation of username handled by mongoose (user.model)
     // validation fails if the username (but not name) is already being used
     // by another document in the Database
+
+    const existingUserName = {
+      username: "pelos-root",
+      name: "impostor",
+      password: "iAmSus",
+    };
+
+    const resp = await api
+      .post("/api/users")
+      .send(existingUserName)
+      .expect(422)
+      .expect("Content-Type", /application\/json/);
+
+    expect(resp.error).toBeDefined();
   });
 
   // DELETE /api/users/:userId
