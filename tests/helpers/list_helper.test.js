@@ -1,5 +1,5 @@
-const listHelper = require("../utils/list_helper");
-const blogTestCases = require("./blog_test_cases");
+const listHelper = require("../helpers/list_helper");
+const blogTestCases = require("../test-cases/blog_test_cases");
 
 describe.skip("dummy", () => {
   test("dummy returns one", () => {
