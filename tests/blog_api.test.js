@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const api = supertest(app);
 
 const Blog = require("../models/blog");
-const helper = require("./blog_helper");
+const helper = require("./helpers/blog_helper");
 
 beforeEach(async () => {
   await Blog.deleteMany();
@@ -69,13 +69,14 @@ describe("Adding new blogs", () => {
     expect(newBlog.likes).toBe(0);
   });
 
-  test("if the 'title' and 'url' properties are missing, fail with status 400 Bad Request", async () => {
+  test("if the 'title' and 'url' properties are missing, fail with status 422", async () => {
     const incompleteBlog = {
       author: "jorch",
       likes: 2,
     };
 
-    await api.post("/api/blogs").send(incompleteBlog).expect(400);
+    // This throws a Validation Error, which I am handling with status 422 now
+    await api.post("/api/blogs").send(incompleteBlog).expect(422);
 
     const blogsAtEnd = await helper.blogsInDB();
     expect(blogsAtEnd).toHaveLength(helper.initialBlogs.length);
