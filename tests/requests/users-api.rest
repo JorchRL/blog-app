@@ -1,0 +1,50 @@
+#######################
+### GET /api/users
+#######################
+### Retrieve all users
+GET http://localhost:3001/api/users HTTP/1.1
+
+
+################################################
+#########
+### POST /api/users
+#########
+### A valid new user
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "paititi",
+  "username": "laPatota",
+  "password": "ilovevaka"
+}
+
+### Invalid Username
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "somename",
+  "username": "a",
+  "password": "password"
+}
+
+### Invalid name
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "a",
+  "username": "someuser",
+  "password": "password"
+}
+
+### Invalid password
+POST http://localhost:3001/api/users
+Content-Type: application/json
+
+{
+  "name": "somename",
+  "username": "someuser",
+  "password": "a"
+}
